@@ -4,14 +4,13 @@ import pygame as pg
 class GameBoard():
     def __init__(self) -> None:
         """ Positions will be a list of lists representing the coordinates of the the ships given by each bot"""
-
-        self.display_surface = None
         self.matrix_of_tiles = []
         self.length = 8
         self.width = 8
         self.matrix = [
             [Tile(i, j) for i in len(self.width)] for j in len(self.length)
         ]
+        self.display_surface = pg.Surface()
 
     def init_ships(positions):
         ships = []
@@ -45,7 +44,11 @@ class Ship():
         self.display_surface = pg.Surface()
 
     def reset_before_game():
+        # TODO: Reset the display surface before a new game
         pass
+
+
+TILE_SIZE = (25, 25)
 
 
 class Tile():
@@ -54,7 +57,14 @@ class Tile():
         self.column = column
         self.hit = False
         self.num_hits = 0
-        self.display_surface = pg.Surface()
+        self.display_surface = pg.Surface(TILE_SIZE)
 
-    def reset_before_game():
+    def reset_before_game(self):
+        # TODO: Reset the display surface before a new game
+        self.display_surface.fill((0, 0, 0))
         pass
+
+    def on_hit(self):
+        self.display_surface.fill((255, 255, 255))
+
+    # TODO: Update the display surface when a hit is detected

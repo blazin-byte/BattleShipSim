@@ -6,7 +6,8 @@ parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
 
 # Actual imports
-from src import game_board
+from src.game_board import GameBoard, Ship, Tile
+from src.game_server import GameServer
 import pygame as pg
 
 
@@ -50,6 +51,14 @@ def main():
 
     screen = setup_window()
 
+    #
+
+    dummy_tile = Tile(1, 2)
+    dummy_tile.reset_before_game()
+    screen.blit(dummy_tile.display_surface, (100, 100))
+
+    #
+
     # Variable to keep our game loop running
     running = True
 
@@ -62,6 +71,14 @@ def main():
             # Check for QUIT event
             if event.type == pg.QUIT:
                 running = False
+
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_j:
+                    dummy_tile.on_hit()
+                    screen.blit(dummy_tile.display_surface, (100, 100))
+                elif event.key == pg.K_k:
+                    dummy_tile.reset_before_game()
+                    screen.blit(dummy_tile.display_surface, (100, 100))
 
         # Update the display
         pg.display.flip()
