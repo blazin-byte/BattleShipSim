@@ -19,7 +19,7 @@ class GameBoard():
             temp = Ship(len(coords))
             ships.append(temp)
             for coord in coords:
-                temp.tiles.append(Tiles(coord))
+                temp.tiles.append(Tile(coord))
 
 
 # are all of your ships sunk
