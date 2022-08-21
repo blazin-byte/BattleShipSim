@@ -69,9 +69,12 @@ class GameBoard():
         for row in range(constants.GAME_BOARD_ROWS):
             for col in range(constants.GAME_BOARD_COLUMNS):
                 current_tile_surface = self.matrix[row][col].display_surface
+                x_coord_to_plot_at = row * constants.TILE_WIDTH
+                y_coord_to_plot_at = col * constants.TILE_HEIGHT
+
                 self.display_surface.blit(current_tile_surface, dest=(
-                    row * constants.TILE_WIDTH,
-                    col * constants.TILE_HEIGHT
+                    x_coord_to_plot_at,
+                    y_coord_to_plot_at
                 ))
 
 
