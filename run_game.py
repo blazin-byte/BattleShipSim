@@ -8,16 +8,8 @@ sys.path.append(str(root))
 # Actual imports
 from src.game_board import GameBoard, Ship, Tile
 from src.game_server import GameServer
+import src.constants as constants
 import pygame as pg
-
-
-##################
-# GAME CONSTANTS #
-##################
-
-
-WINDOW_SIZE = (1200, 600)
-WATER_COLOR = (157, 223, 247)
 
 
 ############################
@@ -28,13 +20,13 @@ WATER_COLOR = (157, 223, 247)
 def setup_window() -> pg.Surface:
     # Define the dimensions of
     # screen object(width,height)
-    screen = pg.display.set_mode(WINDOW_SIZE)
+    screen = pg.display.set_mode(constants.WINDOW_SIZE)
 
     # Set the caption of the screen
     pg.display.set_caption('BATTLESHIP - TO THE DEATH')
 
     # Fill the background colour to the screen
-    screen.fill(WATER_COLOR)
+    screen.fill(constants.WATER_COLOR)
 
     # Update the display using flip
     pg.display.flip()
@@ -53,9 +45,15 @@ def main():
 
     #
 
-    dummy_tile = Tile(1, 2)
-    dummy_tile.reset_before_game()
-    screen.blit(dummy_tile.display_surface, (100, 100))
+    # dummy_tile = Tile(1, 2)
+    # dummy_tile.reset_before_game()
+    # screen.blit(dummy_tile.display_surface, (100, 100))
+
+    dummy_game_board = GameBoard()
+    for rc in range(constants.GAME_BOARD_COLUMNS):
+        dummy_game_board.matrix[rc][rc].on_hit()
+
+    dummy_game_board.update_display_surface()
 
     #
 
@@ -72,13 +70,20 @@ def main():
             if event.type == pg.QUIT:
                 running = False
 
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_j:
-                    dummy_tile.on_hit()
-                    screen.blit(dummy_tile.display_surface, (100, 100))
-                elif event.key == pg.K_k:
-                    dummy_tile.reset_before_game()
-                    screen.blit(dummy_tile.display_surface, (100, 100))
+            # if event.type == pg.KEYDOWN:
+            #     if event.key == pg.K_j:
+            #         dummy_tile.on_hit()
+            #         screen.blit(dummy_tile.display_surface, (100, 100))
+            #     elif event.key == pg.K_k:
+            #         dummy_tile.reset_before_game()
+            #         screen.blit(dummy_tile.display_surface, (100, 100))
+
+        screen.blit(dummy_game_board.display_surface,
+                    (constants.HORIZONTAL_BORDER_SIZE, 80))
+        screen.blit(
+            dummy_game_board.display_surface,
+            (constants.HORIZONTAL_BORDER_SIZE * 2 + constants.GAME_BOARD_COLUMNS *
+             constants.TILE_WIDTH, 80))
 
         # Update the display
         pg.display.flip()

@@ -1,24 +1,28 @@
 import pygame as pg
+from . import constants
 
 
 class GameBoard():
     def __init__(self) -> None:
         """ Positions will be a list of lists representing the coordinates of the the ships given by each bot"""
-        self.length = 8
-        self.width = 8
+        self.ships = []
         self.matrix = [
-            [Tile(i, j) for i in range(self.width)] for j in range(self.length)
+            [Tile(row, col) for row in range(constants.GAME_BOARD_ROWS)]
+            for col in range(constants.GAME_BOARD_COLUMNS)
         ]
-        self.display_surface = pg.Surface()
+        self.display_surface = pg.Surface(
+            size=(constants.GAME_BOARD_ROWS * constants.TILE_WIDTH,
+                  constants.GAME_BOARD_COLUMNS * constants.TILE_HEIGHT)
+        )
 
     def init_ships(self, positions):
-        ships = []
+        self.ships = []
         for coords in positions:
             # Might have to divide the length by 2
-            curShip = Ship(len(coords))
-            ships.append(curShip)
+            current_ship = Ship(len(coords))
+            self.ships.append(current_ship)
             for coord in coords:
-                curShip.tiles.append(self.matrix(coord))
+                current_ship.tiles.append(self.matrix(coord))
 
 
 # are all of your ships sunk
@@ -57,8 +61,18 @@ class GameBoard():
         # You'll have to request the bots for new inputs
         pass
 
-    def update_display_surface():
-        pass
+    def update_display_surface(self):
+        # Clear the display surface
+        self.display_surface.fill(constants.WATER_COLOR)
+
+        # Plot each tile on the display surface
+        for row in range(constants.GAME_BOARD_ROWS):
+            for col in range(constants.GAME_BOARD_COLUMNS):
+                current_tile_surface = self.matrix[row][col].display_surface
+                self.display_surface.blit(current_tile_surface, dest=(
+                    row * constants.TILE_WIDTH,
+                    col * constants.TILE_HEIGHT
+                ))
 
 
 class Ship():
@@ -73,23 +87,24 @@ class Ship():
         pass
 
 
-TILE_SIZE = (25, 25)
-
-
 class Tile():
     def __init__(self, row, column) -> None:
         self.row = row
         self.column = column
         self.hit = False
         self.num_hits = 0
-        self.display_surface = pg.Surface(TILE_SIZE)
+        self.display_surface = pg.Surface(
+            (constants.TILE_WIDTH, constants.TILE_HEIGHT),
+            flags=pg.SRCALPHA)
+
+        self.reset_before_game()
 
     def reset_before_game(self):
-        # TODO: Reset the display surface before a new game
-        self.display_surface.fill((0, 0, 0))
-        pass
+        self.display_surface.fill(constants.TRANSPARENT)
+        pg.draw.rect(
+            self.display_surface, constants.TILE_COLOR, pg.Rect(
+                0, 0, constants.TILE_WIDTH, constants.TILE_HEIGHT))
 
     def on_hit(self):
+        self.display_surface.fill(constants.TRANSPARENT)
         self.display_surface.fill((255, 255, 255))
-
-    # TODO: Update the display surface when a hit is detected
