@@ -42,20 +42,7 @@ def setup_window() -> pg.Surface:
 def main():
 
     screen = setup_window()
-
-    #
-
-    # dummy_tile = Tile(1, 2)
-    # dummy_tile.reset_before_game()
-    # screen.blit(dummy_tile.display_surface, (100, 100))
-
-    dummy_game_board = GameBoard()
-    for rc in range(constants.GAME_BOARD_COLUMNS):
-        dummy_game_board.matrix[rc][rc].on_hit()
-
-    dummy_game_board.update_display_surface()
-
-    #
+    game_server = GameServer()
 
     # Variable to keep our game loop running
     running = True
@@ -78,12 +65,10 @@ def main():
             #         dummy_tile.reset_before_game()
             #         screen.blit(dummy_tile.display_surface, (100, 100))
 
-        screen.blit(dummy_game_board.display_surface,
+        # Update the game server's display surface
+        game_server.update_display_surface()
+        screen.blit(game_server.display_surface,
                     (constants.HORIZONTAL_BORDER_SIZE, 80))
-        screen.blit(
-            dummy_game_board.display_surface,
-            (constants.HORIZONTAL_BORDER_SIZE * 2 + constants.GAME_BOARD_COLUMNS *
-             constants.TILE_WIDTH, 80))
 
         # Update the display
         pg.display.flip()

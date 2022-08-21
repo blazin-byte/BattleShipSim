@@ -11,9 +11,12 @@ class GameBoard():
             for col in range(constants.GAME_BOARD_COLUMNS)
         ]
         self.display_surface = pg.Surface(
-            size=(constants.GAME_BOARD_ROWS * constants.TILE_WIDTH,
-                  constants.GAME_BOARD_COLUMNS * constants.TILE_HEIGHT)
+            (constants.GAME_BOARD_ROWS * constants.TILE_WIDTH,
+             constants.GAME_BOARD_COLUMNS * constants.TILE_HEIGHT),
+            flags=pg.SRCALPHA
         )
+
+        self.reset_before_game("dummy_coords_for_testing")
 
     def init_ships(self, positions):
         self.ships = []
@@ -30,6 +33,7 @@ class GameBoard():
 # pregame reset (reset ship coordinates, reset tiles states)
 
 # Do I get the ship positions from the bot? Can I assume I'll just get my ship coordinates as a list from the bot?
+
 
     def all_sunk(self):
         for ship in self.ships:
@@ -58,9 +62,15 @@ class GameBoard():
 
     def reset_before_game(self, coords):
         # You'll have to request the bots for new inputs
-        pass
+        for row in range(constants.GAME_BOARD_ROWS):
+            for col in range(constants.GAME_BOARD_COLUMNS):
+                current_tile = self.matrix[row][col]
+                current_tile.reset_before_game()
+
+        self.update_display_surface()
 
     def update_display_surface(self):
+
         # Clear the display surface
         self.display_surface.fill(constants.WATER_COLOR)
 
