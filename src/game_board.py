@@ -15,7 +15,12 @@ class GameBoard():
     def init_ships(positions):
         ships = []
         for coords in positions:
-            ships.append(Ship(len(coords)))
+            # Might have to divide the length by 2
+            temp = Ship(len(coords))
+            ships.append(temp)
+            for coord in coords:
+                temp.tiles.append(Tiles(coord))
+
 
 # are all of your ships sunk
 # Update ships positions
@@ -29,12 +34,18 @@ class GameBoard():
                 return False
         return True
 
+    def update_board(coord):
+        # for ship in self.ships:
+        # if
+        pass
+
     def reset_before_game():
+        # You'll have to request the bots for new inputs
         pass
 
 
 class Ship():
-    def __init__(self, length) -> None:
+    def __init__(self, length, coords) -> None:
         self.length = length
         self.tiles = []
         self.is_sunk = False
