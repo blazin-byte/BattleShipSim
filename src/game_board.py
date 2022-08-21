@@ -24,7 +24,7 @@ class GameBoard():
 
 # Do I get the ship positions from the bot? Can I assume I'll just get my ship coordinates as a list from the bot?
 
-    def all_sunk():
+    def all_sunk(self):
         for ship in self.ships:
             if ship.is_sunk == False:
                 return False
