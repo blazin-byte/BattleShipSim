@@ -67,8 +67,10 @@ def main():
 
         # Update the game server's display surface
         game_server.update_display_surface()
-        screen.blit(game_server.display_surface,
-                    (constants.HORIZONTAL_BORDER_SIZE, 80))
+        screen.blit(
+            game_server.display_surface,
+            (constants.HORIZONTAL_BORDER_SIZE - constants.GAME_BOARD_OUTER_BORDER,
+             constants.VERTICAL_BORDER_SIZE - constants.GAME_BOARD_OUTER_BORDER))
 
         # Update the display
         pg.display.flip()

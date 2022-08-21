@@ -11,8 +11,8 @@ class GameBoard():
             for col in range(constants.GAME_BOARD_COLUMNS)
         ]
         self.display_surface = pg.Surface(
-            (constants.GAME_BOARD_ROWS * constants.TILE_WIDTH,
-             constants.GAME_BOARD_COLUMNS * constants.TILE_HEIGHT),
+            (constants.GAME_BOARD_ROWS * constants.TILE_WIDTH + 2 * constants.GAME_BOARD_OUTER_BORDER,
+             constants.GAME_BOARD_COLUMNS * constants.TILE_HEIGHT + 2 * constants.GAME_BOARD_OUTER_BORDER),
             flags=pg.SRCALPHA
         )
 
@@ -42,7 +42,7 @@ class GameBoard():
         return True
 
     def update_board(self, coord):
-        self.matrix(coord).hit = True
+        self.matrix[coord[0]][coord[1]].hit = True
         self.matrix(coord).num_hits += 1
         self.hit_ship(coord)
 
@@ -115,8 +115,12 @@ class Tile():
         self.display_surface.fill(constants.TRANSPARENT)
         pg.draw.rect(
             self.display_surface, constants.TILE_COLOR, pg.Rect(
-                0, 0, constants.TILE_WIDTH, constants.TILE_HEIGHT))
+                0, 0, constants.TILE_WIDTH, constants.TILE_HEIGHT),
+            constants.TILE_RECT_THICKNESS)
 
     def on_hit(self):
         self.display_surface.fill(constants.TRANSPARENT)
-        self.display_surface.fill((255, 255, 255))
+        pg.draw.rect(
+            self.display_surface, (255, 255, 255), pg.Rect(
+                0, 0, constants.TILE_WIDTH, constants.TILE_HEIGHT),
+            constants.TILE_RECT_THICKNESS)
