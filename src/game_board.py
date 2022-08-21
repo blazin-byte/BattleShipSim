@@ -4,22 +4,21 @@ import pygame as pg
 class GameBoard():
     def __init__(self) -> None:
         """ Positions will be a list of lists representing the coordinates of the the ships given by each bot"""
-        self.matrix_of_tiles = []
         self.length = 8
         self.width = 8
         self.matrix = [
-            [Tile(i, j) for i in len(self.width)] for j in len(self.length)
+            [Tile(i, j) for i in range(self.width)] for j in range(self.length)
         ]
         self.display_surface = pg.Surface()
 
-    def init_ships(positions):
+    def init_ships(self, positions):
         ships = []
         for coords in positions:
             # Might have to divide the length by 2
-            temp = Ship(len(coords))
-            ships.append(temp)
+            curShip = Ship(len(coords))
+            ships.append(curShip)
             for coord in coords:
-                temp.tiles.append(Tile(coord))
+                curShip.tiles.append(self.matrix(coord))
 
 
 # are all of your ships sunk
@@ -28,16 +27,31 @@ class GameBoard():
 
 # Do I get the ship positions from the bot? Can I assume I'll just get my ship coordinates as a list from the bot?
 
+
     def all_sunk(self):
         for ship in self.ships:
             if ship.is_sunk == False:
                 return False
         return True
 
-    def update_board(coord):
-        # for ship in self.ships:
-        # if
-        pass
+    def update_board(self, coord):
+        self.matrix(coord).hit = True
+        self.matrix(coord).num_hits += 1
+        self.hit_ship(coord)
+
+    def hit_ship(self, coord):
+        for ship in self.ships:
+            for tile in ship.tiles:
+                if coord[0] == tile.row and coord[1] == tile.column:
+                    self.sunk_ship(ship)
+
+    def sunk_ship(self, ship):
+        hit_check = True
+        for tile in ship.tiles:
+            if tile != self.matrix.tile:
+                hit_check = False
+        if hit_check:
+            ship.is_sunk = True
 
     def reset_before_game():
         # You'll have to request the bots for new inputs
