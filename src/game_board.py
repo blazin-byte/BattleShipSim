@@ -18,16 +18,17 @@ class GameBoard():
         for coords in positions:
             ships.append(Ship(len(coords)))
 
-
 # are all of your ships sunk
 # Update ships positions
 # pregame reset (reset ship coordinates, reset tiles states)
 
 # Do I get the ship positions from the bot? Can I assume I'll just get my ship coordinates as a list from the bot?
 
-
     def all_sunk():
-        pass
+        for ship in self.ships:
+            if ship.is_sunk == False:
+                return False
+        return True
 
     def reset_before_game():
         pass
