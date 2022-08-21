@@ -2,9 +2,10 @@ import pygame as pg
 
 
 class GameBoard():
-    """ Positions will be a list of lists representing the coordinates of the the ships given by each bot"""
+    def __init__(self) -> None:
+        """ Positions will be a list of lists representing the coordinates of the the ships given by each bot"""
 
-    def __init__(self, positions) -> None:
+        self.display_surface = None
         self.matrix_of_tiles = []
         self.length = 8
         self.width = 8
@@ -28,7 +29,7 @@ class GameBoard():
 
 # Do I get the ship positions from the bot? Can I assume I'll just get my ship coordinates as a list from the bot?
 
-    def all_sunk():
+    def all_sunk(self):
         for ship in self.ships:
             if ship.is_sunk == False:
                 return False
@@ -43,12 +44,16 @@ class GameBoard():
         # You'll have to request the bots for new inputs
         pass
 
+    def update_display_surface():
+        pass
+
 
 class Ship():
     def __init__(self, length, coords) -> None:
         self.length = length
         self.tiles = []
         self.is_sunk = False
+        self.display_surface = pg.Surface()
 
     def reset_before_game():
         pass
@@ -60,6 +65,7 @@ class Tile():
         self.column = column
         self.hit = False
         self.num_hits = 0
+        self.display_surface = pg.Surface()
 
     def reset_before_game():
         pass
