@@ -1,16 +1,18 @@
 import pygame as pg
+from . import constants
 
 
 class GameBoard():
     def __init__(self) -> None:
         """ Positions will be a list of lists representing the coordinates of the the ships given by each bot"""
-        self.matrix_of_tiles = []
-        self.length = 8
-        self.width = 8
         self.matrix = [
-            [Tile(i, j) for i in len(self.width)] for j in len(self.length)
+            [Tile(row, col) for row in range(constants.GAME_BOARD_ROWS)]
+            for col in range(constants.GAME_BOARD_COLUMNS)
         ]
-        self.display_surface = pg.Surface()
+        self.display_surface = pg.Surface(
+            size=(constants.GAME_BOARD_ROWS * constants.TILE_WIDTH,
+                  constants.GAME_BOARD_COLUMNS * constants.TILE_HEIGHT)
+        )
 
     def init_ships(positions):
         ships = []
@@ -43,8 +45,18 @@ class GameBoard():
         # You'll have to request the bots for new inputs
         pass
 
-    def update_display_surface():
-        pass
+    def update_display_surface(self):
+        # Clear the display surface
+        self.display_surface.fill(constants.WATER_COLOR)
+
+        # Plot each tile on the display surface
+        for row in range(constants.GAME_BOARD_ROWS):
+            for col in range(constants.GAME_BOARD_COLUMNS):
+                current_tile_surface = self.matrix[row][col].display_surface
+                self.display_surface.blit(current_tile_surface, dest=(
+                    row * constants.TILE_WIDTH,
+                    col * constants.TILE_HEIGHT
+                ))
 
 
 class Ship():
@@ -59,16 +71,13 @@ class Ship():
         pass
 
 
-TILE_SIZE = (25, 25)
-
-
 class Tile():
     def __init__(self, row, column) -> None:
         self.row = row
         self.column = column
         self.hit = False
         self.num_hits = 0
-        self.display_surface = pg.Surface(TILE_SIZE)
+        self.display_surface = pg.Surface((constants.TILE_WIDTH, constants.TILE_HEIGHT))
 
     def reset_before_game(self):
         # TODO: Reset the display surface before a new game
