@@ -77,14 +77,18 @@ class Tile():
         self.column = column
         self.hit = False
         self.num_hits = 0
-        self.display_surface = pg.Surface((constants.TILE_WIDTH, constants.TILE_HEIGHT))
+        self.display_surface = pg.Surface(
+            (constants.TILE_WIDTH, constants.TILE_HEIGHT),
+            flags=pg.SRCALPHA)
+
+        self.reset_before_game()
 
     def reset_before_game(self):
-        # TODO: Reset the display surface before a new game
-        self.display_surface.fill((0, 0, 0))
-        pass
+        self.display_surface.fill(constants.TRANSPARENT)
+        pg.draw.rect(
+            self.display_surface, constants.TILE_COLOR, pg.Rect(
+                0, 0, constants.TILE_WIDTH, constants.TILE_HEIGHT))
 
     def on_hit(self):
+        self.display_surface.fill(constants.TRANSPARENT)
         self.display_surface.fill((255, 255, 255))
-
-    # TODO: Update the display surface when a hit is detected
